@@ -1,37 +1,37 @@
 package control;
 
 abstract class Pessoa {
-	private int id, telefone;
-    private String nome, email, senha;
+	protected int id;
+    protected String nome, email, senha, telefone;
     
-	protected int getId() {
+	public int getId() {
 		return id;
 	}
-	protected void setId(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
-	protected int getTelefone() {
+	public String getTelefone() {
 		return telefone;
 	}
-	protected void setTelefone(int telefone) {
+	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	protected String getNome() {
+	public String getNome() {
 		return nome;
 	}
-	protected void setNome(String nome) {
+	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	protected String getEmail() {
+	public String getEmail() {
 		return email;
 	}
-	protected void setEmail(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
-	protected String getSenha() {
+	public String getSenha() {
 		return senha;
 	}
-	protected void setSenha(String senha) {
+	public void setSenha(String senha) {
 		this.senha = senha;
 	}
 }
