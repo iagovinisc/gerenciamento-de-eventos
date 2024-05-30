@@ -155,18 +155,18 @@ public class GerenciarEventos extends javax.swing.JFrame {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
-        	layout.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
         			.addContainerGap()
-        			.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 902, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(125, Short.MAX_VALUE))
+        			.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 528, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
         			.addContainerGap()
-        			.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 523, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(100, Short.MAX_VALUE))
+        			.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 335, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         
         JButton btnNewButton = new JButton("Editar");
