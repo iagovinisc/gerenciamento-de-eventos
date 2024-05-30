@@ -1,14 +1,9 @@
 package control;
 
 public class Evento {
-	private int id;
+	private int id_evento;
     private String nome_evento, nome_organizador, nome_palestrante, tipo_evento, data, horario, local;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	
 	public String getNome_evento() {
 		return nome_evento;
 	}
@@ -50,6 +45,12 @@ public class Evento {
 	}
 	public void setLocal(String local) {
 		this.local = local;
+	}
+	public int getId_evento() {
+		return id_evento;
+	}
+	public void setId_evento(int id_evento) {
+		this.id_evento = id_evento;
 	}
 	
 }

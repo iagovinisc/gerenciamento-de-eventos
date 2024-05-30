@@ -13,7 +13,6 @@ public class EventoDAO {
 		
 	public boolean cadastrarEvento(Evento evento) throws SQLException{
 		String inserir = "INSERT INTO tb_evento(nome, tipo_evento, data_evento, horario, localizacao) VALUES(?, ?, ?, ?, ?)";
-		String consulta = "SELECT LAST_INSERT_ID();";
 		
 		try { //insere os dados do evento na tabela evento
 			ps = conn.conexao().prepareStatement(inserir, Statement.RETURN_GENERATED_KEYS);
@@ -22,22 +21,24 @@ public class EventoDAO {
 			ps.setString(3, evento.getData());
 			ps.setString(4, evento.getHorario());
 			ps.setString(5, evento.getLocal());
-			ResultSet rs = ps.getGeneratedKeys(); // pegando a chave gerada
 			ps.execute();
-			System.out.println("dados do evento cadastrado\n");
+			System.out.println("Evento cadastrado\n");
 			
-			// busca a chave ID do evento criado
-			if(rs.next()) {
+			ResultSet rs = ps.getGeneratedKeys(); // pega a chave gerada		
+			if(rs.next()) { // busca a chave ID_evento dentro da coluna
 				int idEvento = rs.getInt(1);
-				System.out.println("id evento capturado");
-			}
+				evento.setId_evento(idEvento); //envia o id para a classe evento.setId_evento
+				System.out.println("id_evento capturado: "+idEvento);
+			}else {
+                System.out.println("id não capturado");
+            }
 			
 			conn.desconectar(conn.conexao());
 			
 			return true;
 			
 		} 	catch (SQLException erro) {
-			System.out.println("Erro ao enviar dados "+erro.getMessage()+"\n");
+			System.out.println("Erro ao enviar dados de evento "+erro.getMessage()+"\n");
 			throw erro;
 		}
 		
