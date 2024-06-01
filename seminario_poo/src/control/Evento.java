@@ -1,8 +1,8 @@
 package control;
 
 public class Evento {
-	private int id_evento;
-    private String nome_evento, nome_organizador, nome_palestrante, tipo_evento, data, horario, local;
+	//private int id_evento;
+    private String nome_evento, descricao, tipo_evento, data, horario, local;
 	
 	public String getNome_evento() {
 		return nome_evento;
@@ -10,17 +10,11 @@ public class Evento {
 	public void setNome_evento(String nome_evento) {
 		this.nome_evento = nome_evento;
 	}
-	public String getNome_organizador() {
-		return nome_organizador;
+	public String getDescricao() {
+		return descricao;
 	}
-	public void setNome_organizador(String nome_organizador) {
-		this.nome_organizador = nome_organizador;
-	}
-	public String getNome_palestrante() {
-		return nome_palestrante;
-	}
-	public void setNome_palestrante(String nome_palestrante) {
-		this.nome_palestrante = nome_palestrante;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	public String getTipo_evento() {
 		return tipo_evento;
@@ -46,12 +40,12 @@ public class Evento {
 	public void setLocal(String local) {
 		this.local = local;
 	}
-	public int getId_evento() {
+	/*public int getId_evento() {
 		return id_evento;
 	}
 	public void setId_evento(int id_evento) {
 		this.id_evento = id_evento;
-	}
+	}*/
 	
 }
 

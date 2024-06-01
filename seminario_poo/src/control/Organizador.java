@@ -2,12 +2,12 @@ package control;
 
 public class Organizador extends Pessoa{
 	
-	public int getId() {
+	/*public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
+	}*/
 	public String getTelefone() {
 		return telefone;
 	}
@@ -31,6 +31,18 @@ public class Organizador extends Pessoa{
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	public int getCpf() {
+		return cpf;
+	}
+	public void setCpf(int cpf) {
+		this.cpf = cpf;
+	}
+	public String getEndereco() {
+		return endereco;
+	}
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 	
 }

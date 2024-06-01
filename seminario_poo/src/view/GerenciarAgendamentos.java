@@ -1,10 +1,8 @@
 package view;
 
 import control.Evento;
-import control.Organizador;
 import model.Conexao;
 import model.EventoDAO;
-import model.OrganizadorDAO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +12,7 @@ import java.sql.SQLException;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-public class AgendarEventos extends JFrame {
+public class GerenciarAgendamentos extends JFrame {
 
     private JPanel jPanel2;
     private JPanel jPanel1;
@@ -28,17 +26,18 @@ public class AgendarEventos extends JFrame {
     private JLabel jLabel4;
     private JLabel jLabel5;
     private JLabel jLabel6;
-    private JButton criarAgendamento;
+    private JButton salvarAlteracao;
     private JFormattedTextField campoDescricao;
-    private JFormattedTextField campoNome;
     private JFormattedTextField campoLocal;
     private JFormattedTextField campoHorario;
     private JFormattedTextField campoData;
     private JLabel lblDescrio;
-    private JFormattedTextField campoTipo;
     private JButton botaoSair;
+    private JButton btnNewButton;
+    private JButton btnExcluir;
+    private JComboBox comboBox;
 
-    public AgendarEventos() {
+    public GerenciarAgendamentos() {
         initComponents();
     }
 
@@ -47,12 +46,6 @@ public class AgendarEventos extends JFrame {
         jPanel1 = new JPanel();
         jPanel1.setBounds(0, 0, 212, 725);
         botaoGerenciarAgendamentos = new JButton();
-        botaoGerenciarAgendamentos.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-            	new GerenciarAgendamentos().setVisible(true);
-            	dispose();
-        	}
-        });
         botaoGerenciarAgendamentos.setBounds(0, 278, 223, 41);
         botaoAgendarEvento = new JButton();
         botaoAgendarEvento.setBounds(0, 143, 223, 43);
@@ -61,25 +54,22 @@ public class AgendarEventos extends JFrame {
         botaoPaginainicial = new JButton();
         botaoPaginainicial.setBounds(0, 82, 223, 43);
         jLabel2 = new JLabel();
-        jLabel2.setBounds(317, 29, 161, 27);
+        jLabel2.setBounds(317, 29, 328, 27);
         jLabel1 = new JLabel();
-        jLabel1.setBounds(317, 85, 118, 20);
+        jLabel1.setBounds(317, 85, 177, 20);
         jLabel3 = new JLabel();
-        jLabel3.setBounds(317, 149, 106, 20);
+        jLabel3.setBounds(317, 149, 128, 20);
         jLabel4 = new JLabel();
-        jLabel4.setBounds(576, 213, 90, 20);
+        jLabel4.setBounds(576, 213, 128, 20);
         jLabel5 = new JLabel();
         jLabel5.setBounds(317, 213, 90, 20);
         jLabel6 = new JLabel();
         jLabel6.setBounds(317, 290, 106, 20);
-        criarAgendamento = new JButton();
-        criarAgendamento.setBounds(433, 378, 212, 36);
+        salvarAlteracao = new JButton();
+        salvarAlteracao.setBounds(433, 378, 212, 36);
         campoDescricao = new JFormattedTextField();
         campoDescricao.setBounds(317, 175, 471, 28);
         campoDescricao.setBackground(Color.WHITE);
-        campoNome = new JFormattedTextField();
-        campoNome.setBounds(317, 111, 212, 28);
-        campoNome.setBackground(Color.WHITE);
         campoLocal = new JFormattedTextField();
         campoLocal.setBounds(317, 323, 471, 33);
         campoLocal.setBackground(Color.WHITE);
@@ -100,24 +90,10 @@ public class AgendarEventos extends JFrame {
         botaoGerenciarAgendamentos.setBackground(new Color(36, 135, 219));
         botaoGerenciarAgendamentos.setFont(new Font("Segoe UI", Font.BOLD, 13));
         botaoGerenciarAgendamentos.setForeground(new Color(255, 255, 255));
-        botaoGerenciarAgendamentos.setIcon(new ImageIcon(AgendarEventos.class.getResource("/view/icons/iconizer-editar.png")));
+        botaoGerenciarAgendamentos.setIcon(new ImageIcon(GerenciarAgendamentos.class.getResource("/view/icons/iconizer-editar.png")));
         botaoGerenciarAgendamentos.setText("Gerenciar agendamentos");
         botaoGerenciarAgendamentos.setBorderPainted(false);
         botaoGerenciarAgendamentos.setHorizontalTextPosition(SwingConstants.RIGHT);
-        
-        JLabel msg = new JLabel("evento criado");
-        msg.setBounds(408, 434, 237, 36);
-        msg.setForeground(SystemColor.textHighlight);
-        msg.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        msg.setIcon(new ImageIcon("C:\\Users\\iagov\\Downloads\\sucesso (1).png"));
-        msg.setHorizontalAlignment(SwingConstants.CENTER);
-        
-        JLabel msgerro = new JLabel("Outro evento ja existe");
-        msg.setBounds(408, 434, 237, 36);
-        msg.setForeground(SystemColor.textHighlight);
-        msg.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        msg.setIcon(new ImageIcon("C:\\Users\\iagov\\Downloads\\sucesso (1).png"));
-        msg.setHorizontalAlignment(SwingConstants.CENTER);
 
         botaoAgendarEvento.setBackground(new Color(36, 135, 219));
         botaoAgendarEvento.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -134,7 +110,7 @@ public class AgendarEventos extends JFrame {
         botaoCadastrarOrganizador.setBackground(new Color(36, 135, 219));
         botaoCadastrarOrganizador.setFont(new Font("Segoe UI", Font.BOLD, 13));
         botaoCadastrarOrganizador.setForeground(new Color(255, 255, 255));
-        botaoCadastrarOrganizador.setIcon(new ImageIcon(AgendarEventos.class.getResource("/view/icons/icons8-usuário-50.png")));
+        botaoCadastrarOrganizador.setIcon(new ImageIcon(GerenciarAgendamentos.class.getResource("/view/icons/icons8-usuário-50.png")));
         botaoCadastrarOrganizador.setText("Cadastrar organizador");
         botaoCadastrarOrganizador.setBorderPainted(false);
         botaoCadastrarOrganizador.addActionListener(new ActionListener() {
@@ -158,70 +134,52 @@ public class AgendarEventos extends JFrame {
         jLabel2.setBackground(new Color(255, 255, 255));
         jLabel2.setFont(new Font("Segoe UI", Font.BOLD, 20));
         jLabel2.setForeground(new Color(9, 91, 176));
-        jLabel2.setText("Agendar eventos");
+        jLabel2.setText("Gerenciar Agendamentos");
 
         jLabel1.setFont(new Font("Segoe UI", Font.BOLD, 14));
         jLabel1.setForeground(new Color(36, 135, 219));
-        jLabel1.setText("Nome do evento");
+        jLabel1.setText("Selecionar agendamento");
 
         jLabel3.setFont(new Font("Segoe UI", Font.BOLD, 14));
         jLabel3.setForeground(new Color(36, 135, 219));
-        jLabel3.setText("Descrição");
+        jLabel3.setText("Alterar descrição");
 
         jLabel4.setFont(new Font("Segoe UI", Font.BOLD, 14));
         jLabel4.setForeground(new Color(36, 135, 219));
-        jLabel4.setText("Horário");
+        jLabel4.setText("Alterar horário");
 
         jLabel5.setFont(new Font("Segoe UI", Font.BOLD, 14));
         jLabel5.setForeground(new Color(36, 135, 219));
-        jLabel5.setText("Data");
+        jLabel5.setText("Alterar data");
 
         jLabel6.setFont(new Font("Segoe UI", Font.BOLD, 14));
         jLabel6.setForeground(new Color(36, 135, 219));
-        jLabel6.setText("Local");
+        jLabel6.setText("Alterar local");
         
-        criarAgendamento.setBackground(new Color(36, 135, 219));
-        criarAgendamento.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        criarAgendamento.setForeground(new Color(255, 255, 255));
-        criarAgendamento.setText("Criar agendamento");
-        criarAgendamento.setBorderPainted(false);
-        criarAgendamento.addActionListener(new ActionListener() {
+        /*JLabel msg = new JLabel("aguardando");
+        msg.setBounds(408, 434, 237, 36);
+        msg.setForeground(SystemColor.textHighlight);
+        msg.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        msg.setIcon(new ImageIcon("C:\\Users\\iagov\\Downloads\\sucesso (1).png"));
+        msg.setHorizontalAlignment(SwingConstants.CENTER);
+*/
+        salvarAlteracao.setBackground(new Color(36, 135, 219));
+        salvarAlteracao.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        salvarAlteracao.setForeground(new Color(255, 255, 255));
+        salvarAlteracao.setText("Salvar");
+        salvarAlteracao.setBorderPainted(false);
+        salvarAlteracao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	new CadastrarOrganizador().setVisible(true);
+            	new Paginainicial().setVisible(true);
+            	dispose();
                 criarEventoActionPerformed(evt);
+                JOptionPane.showMessageDialog(null, "Alteração feita com sucesso!");
                 
-                Organizador org = new Organizador();
-                EventoDAO eventoDAO = new EventoDAO();
-                Evento evento = new Evento();
-                
-                
-                try {
-                    evento.setNome_evento(campoNome.getText());
-                    evento.setTipo_evento(campoTipo.getText());
-                    evento.setDescricao(campoDescricao.getText());
-                    evento.setLocal(campoLocal.getText());
-                    evento.setData(campoData.getText());
-                    evento.setHorario(campoHorario.getText());  
-                    
-                    if(eventoDAO.cadastrarEvento(evento) == true) {
-                    	jPanel2.add(msg);
-                    	JOptionPane.showMessageDialog(null, "Agendamento criado com sucesso!");
-                    }else {
-                        JOptionPane.showMessageDialog(null, "Já existe um evento cadastrado com a mesma data, hora e local, altere alguma dessas opções");
-                    }
-                     
-                } catch (NumberFormatException | SQLException erro) {
-                    erro.printStackTrace();
-                }
-                dispose();   
-			}
+            }
         });
 
         campoDescricao.setForeground(new Color(36, 135, 219));
         campoDescricao.setHorizontalAlignment(JTextField.CENTER);
-
-        campoNome.setForeground(Color.LIGHT_GRAY);
-        campoNome.setHorizontalAlignment(JTextField.CENTER);
 
         campoLocal.setForeground(new Color(36, 135, 219));
         campoLocal.setHorizontalAlignment(JTextField.CENTER);
@@ -256,10 +214,10 @@ public class AgendarEventos extends JFrame {
         botaoSair.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
             	new Paginainicial().setVisible(true);
-                
+            	dispose();
         	}
         });
-        botaoSair.setIcon(new ImageIcon(AgendarEventos.class.getResource("/view/icons/icons8-sair-26.png")));
+        botaoSair.setIcon(new ImageIcon(GerenciarAgendamentos.class.getResource("/view/icons/icons8-sair-26.png")));
         botaoSair.setText(" Sair                        ");
         botaoSair.setHorizontalTextPosition(SwingConstants.RIGHT);
         botaoSair.setForeground(Color.WHITE);
@@ -272,12 +230,11 @@ public class AgendarEventos extends JFrame {
         jPanel2.add(jLabel5);
         jPanel2.add(jLabel6);
         jPanel2.add(jLabel4);
-        jPanel2.add(criarAgendamento);
+        jPanel2.add(salvarAlteracao);
         jPanel2.add(campoHorario);
         jPanel2.add(campoData);
         jPanel2.add(campoLocal);
         jPanel2.add(campoDescricao);
-        jPanel2.add(campoNome);
         jPanel2.add(jLabel1);
         jPanel2.add(jLabel3);
         
@@ -288,30 +245,44 @@ public class AgendarEventos extends JFrame {
         lblDescrio.setFont(new Font("Segoe UI", Font.BOLD, 14));
         jPanel2.add(lblDescrio);
         
-        campoTipo = new JFormattedTextField();
-        campoTipo.setBounds(576, 111, 212, 28);
-        campoTipo.setHorizontalAlignment(SwingConstants.CENTER);
-        campoTipo.setForeground(Color.LIGHT_GRAY);
-        campoTipo.setBackground(Color.WHITE);
-        jPanel2.add(campoTipo);
+        btnNewButton = new JButton("Editar");
+        btnNewButton.setBounds(576, 111, 85, 27);
+        btnNewButton.setForeground(SystemColor.textHighlight);
+        btnNewButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        jPanel2.add(btnNewButton);
+        
+        btnExcluir = new JButton("Excluir");
+        btnExcluir.setBounds(692, 111, 85, 27);
+        btnExcluir.setForeground(SystemColor.textHighlight);
+        btnExcluir.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        jPanel2.add(btnExcluir);
+        
+        comboBox = new JComboBox();
+        comboBox.setBounds(317, 111, 212, 27);
+        jPanel2.add(comboBox);
         
 
         pack();
     }
 
     private void jButton18ActionPerformed(ActionEvent evt) {
+    	new AgendarEventos().setVisible(true);
+    	dispose();
+    	criarEventoActionPerformed(evt);
         // Implementar a lógica para o botão jButton18, se necessário
     }
 
     private void jButton20ActionPerformed(ActionEvent evt) {
     	new CadastrarOrganizador().setVisible(true);
     	dispose();
+    	criarEventoActionPerformed(evt);
         // Implementar a lógica para o botão jButton20, se necessário
     }
 
     private void jButton21ActionPerformed(ActionEvent evt) {
-       	new Paginainicial().setVisible(true);
+    	new Paginainicial().setVisible(true);
     	dispose();
+    	criarEventoActionPerformed(evt);
         // Implementar a lógica para o botão jButton21, se necessário
     }
 
@@ -322,7 +293,7 @@ public class AgendarEventos extends JFrame {
     public static void main(String args[]) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AgendarEventos().setVisible(true);
+                new GerenciarAgendamentos().setVisible(true);
             }
         });
     }

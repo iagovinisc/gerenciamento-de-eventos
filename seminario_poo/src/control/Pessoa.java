@@ -1,8 +1,8 @@
 package control;
 
 abstract class Pessoa {
-	protected int id;
-    protected String nome, email, senha, telefone;
+	protected int id, cpf;
+    protected String nome, email, senha, telefone, endereco = null;
     
 	public int getId() {
 		return id;
@@ -22,6 +22,12 @@ abstract class Pessoa {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	public int getCpf() {
+		return cpf;
+	}
+	public void setCpf(int cpf) {
+		this.cpf = cpf;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -34,4 +40,11 @@ abstract class Pessoa {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	public String getEndereco() {
+		return endereco;
+	}
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+	
 }
