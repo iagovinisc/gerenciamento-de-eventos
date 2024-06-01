@@ -170,14 +170,13 @@ public class CadastrarOrganizador extends JFrame {
                 
                 
                 try {
-					if(orgDAO.cadastrarOrg(org) == true) {
-						org.setNome(campoNome.getText());
-						org.setEmail(campoEmail.getText());
-						org.setCpf(Integer.parseInt(campoCPF.getText()));
-						org.setTelefone(campoTelefone.getText());
-						org.setEndereco(campoEndereco.getText());
+					org.setNome(campoNome.getText());
+					org.setEmail(campoEmail.getText());
+					org.setCpf(Integer.parseInt(campoCPF.getText()));
+					org.setTelefone(campoTelefone.getText());
+					org.setEndereco(campoEndereco.getText());
 						
-						orgDAO.cadastrarOrg(org);
+					if(orgDAO.cadastrarOrg(org) == true) {		
 						JOptionPane.showMessageDialog(null, "Organizador do evento cadastrado");
 					}else {
 						JOptionPane.showMessageDialog(null, "erro ao cadastrar organizador");
