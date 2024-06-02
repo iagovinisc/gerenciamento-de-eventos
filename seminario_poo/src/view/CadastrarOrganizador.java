@@ -162,13 +162,11 @@ public class CadastrarOrganizador extends JFrame {
         adicionarOrganizador.setBorderPainted(false);
         adicionarOrganizador.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	new Paginainicial().setVisible(true);
                 criarEventoActionPerformed(evt);
                 
                 Organizador org = new Organizador();
                 OrganizadorDAO orgDAO = new OrganizadorDAO();
-                
-                
+                              
                 try {
 					org.setNome(campoNome.getText());
 					org.setEmail(campoEmail.getText());
@@ -178,12 +176,13 @@ public class CadastrarOrganizador extends JFrame {
 						
 					if(orgDAO.cadastrarOrg(org) == true) {		
 						JOptionPane.showMessageDialog(null, "Organizador do evento cadastrado");
+						new Paginainicial().setVisible(true);
 					}else {
 						JOptionPane.showMessageDialog(null, "erro ao cadastrar organizador");
 						
 					}
 				} catch (NumberFormatException | SQLException e) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "O campo CPF aceita apenas números");
 					e.printStackTrace();
 				}
                 

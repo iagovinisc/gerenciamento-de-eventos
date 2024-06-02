@@ -41,9 +41,7 @@ public class OrganizadorDAO {
 		}catch(SQLException erro) {
 			System.out.println("erro ao capturar chave"+erro.getMessage()+"\n");
 			throw erro;
-		}
-		
-		
+		}		
 	}
 	
 	public boolean cadastrarOrg(Organizador org) throws SQLException {

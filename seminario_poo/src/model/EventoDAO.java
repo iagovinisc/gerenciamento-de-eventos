@@ -1,16 +1,18 @@
 package model;
 
 import java.sql.PreparedStatement;
+import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import control.Organizador;
 import control.Evento;
 
 public class EventoDAO {
 
 	Conexao conn = new Conexao();
 	PreparedStatement ps = null;
+	ResultSet rs = null;
 	
 	// classe para comparar os dados inseridos com a tabela do banco de dados
 	public boolean comparaDados(Evento evento) throws SQLException {
@@ -21,10 +23,9 @@ public class EventoDAO {
 			ps.setString(1, evento.getData());
 			ps.setString(2, evento.getHorario());
 			ps.setString(3, evento.getLocal());
-			
-			ResultSet resultado = null;
-			resultado = ps.executeQuery();
-			if(resultado.next() == false){
+
+			rs = ps.executeQuery();
+			if(rs.next() == false){
 				return true;
 			} else {
 				return false;
@@ -41,15 +42,16 @@ public class EventoDAO {
 		
 		comparaDados(evento); //envia os dados para a comparação
 		if (comparaDados(evento) == true){ // se o cadastro for permitido
-			String inserir = "INSERT INTO tb_evento(nome, tipo_evento, data_evento, horario, localizacao) VALUES(?, ?, ?, ?, ?)";
+			String inserir = "INSERT INTO tb_evento(nome, tipo_evento, descricao, data_evento, horario, localizacao) VALUES(?, ?, ?, ?, ?, ?)";
 		
 			try { //insere os dados do evento na tabela evento
 				ps = conn.conexao().prepareStatement(inserir);
 				ps.setString(1, evento.getNome_evento());
 				ps.setString(2, evento.getTipo_evento());
-				ps.setString(3, evento.getData());
-				ps.setString(4, evento.getHorario());
-				ps.setString(5, evento.getLocal());
+				ps.setString(3, evento.getDescricao());
+				ps.setString(4, evento.getData());
+				ps.setString(5, evento.getHorario());
+				ps.setString(6, evento.getLocal());
 				ps.execute();
 				System.out.println("Evento cadastrado\n");
 		
@@ -106,5 +108,45 @@ public class EventoDAO {
 			throw erro;
 		}
 	}
+	
+	public DefaultTableModel mostrarEventos() throws SQLException {
+		
+		String consulta = "SELECT id_evento, nome AS evento_nome, tipo_evento, descricao, data_evento, horario, localizacao FROM tb_evento";
+        DefaultTableModel tabela = new DefaultTableModel(new String[]{"ID", "Nome", "Tipo", "Descricao", "Data", "Horario", "Local", "Organizador"}, 0);
+
+        try {
+            ps = conn.conexao().prepareStatement(consulta);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                int idEvento = rs.getInt("id_evento");
+                String eventoNome = rs.getString("evento_nome");
+                String tipoEvento = rs.getString("tipo_evento");
+                String descricao = rs.getString("descricao");
+                String dataEvento = rs.getString("data_evento");
+                String horario = rs.getString("horario");
+                String localizacao = rs.getString("localizacao");
+                
+                String orgNome = null;
+                String tbOrg = "SELECT nome FROM tb_organizador WHERE id_evento = ?";
+                try (PreparedStatement psOrg = conn.conexao().prepareStatement(tbOrg)) {
+                    psOrg.setInt(1, idEvento);
+                    try (ResultSet rsOrg = psOrg.executeQuery()) {
+                        if (rsOrg.next()) {
+                            orgNome = rsOrg.getString("nome");
+                        }
+                    }
+                }
+                
+                tabela.addRow(new Object[]{idEvento, eventoNome, tipoEvento, descricao, dataEvento, horario, localizacao, orgNome});
+            }
+        } catch (SQLException erro) {
+            System.out.println("Erro ao obter dados: " + erro.getMessage());
+            throw erro;
+        } 
+        conn.desconectar(conn.conexao());
+
+        return tabela;
+    }
 }
 

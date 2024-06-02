@@ -1,7 +1,7 @@
 package control;
 
 public class Evento {
-	//private int id_evento;
+	private int id_evento;
     private String nome_evento, descricao, tipo_evento, data, horario, local;
 	
 	public String getNome_evento() {
@@ -40,12 +40,12 @@ public class Evento {
 	public void setLocal(String local) {
 		this.local = local;
 	}
-	/*public int getId_evento() {
+	public int getId_evento() {
 		return id_evento;
 	}
 	public void setId_evento(int id_evento) {
 		this.id_evento = id_evento;
-	}*/
+	}
 	
 }
 
