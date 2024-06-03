@@ -43,8 +43,7 @@ public class EventoDAO {
 		
 	public boolean cadastrarEvento(Evento evento) throws SQLException{
 		
-		compararDados(evento); //envia os dados para a comparação
-		if (compararDados(evento) == true){ // se o cadastro for permitido
+		if (compararDados(evento) == true){ // envia os dados para a comparação e entra nesse if se o cadastro for permitido
 			String inserir = "INSERT INTO tb_evento(nome, tipo_evento, descricao, data_evento, horario, localizacao) VALUES(?, ?, ?, ?, ?, ?)";
 		
 			try { //insere os dados do evento na tabela evento
@@ -74,38 +73,63 @@ public class EventoDAO {
 	}	
 	
 	public boolean editarEvento(Evento evento) throws SQLException {
-		String consulta = "UPDATE tb_evento SET nome = ?, tipo_evento = ?, data_evento = ?, horario = ?, localizacao = ? WHERE nome = ?";
-		
-		try {
-			ps = conn.conexao().prepareStatement(consulta);
-			ps.setString(1, evento.getNome_evento());
-			ps.setString(2, evento.getTipo_evento());
-			ps.setString(3, evento.getData());
-			ps.setString(4, evento.getHorario());
-			ps.setString(5, evento.getLocal());
-			ps.setString(6, evento.getNome_evento());
-			ps.execute();
-			System.out.println("dados alterados\n");
-			conn.desconectar(conn.conexao());
-			return true;
-			
-		}catch(SQLException erro){
-			System.out.println("Erro ao alterar dados "+erro.getMessage()+"\n");
-			throw erro;
+			if(compararDados(evento) == true) {
+				
+				//faz a consulta no banco para alterar os dados
+				String consulta = "UPDATE tb_evento SET nome = ?, tipo_evento = ?, data_evento = ?, horario = ?, localizacao = ? WHERE id_evento = ?";
+				
+				try {
+					//envia os dados para a alteração
+					ps = conn.conexao().prepareStatement(consulta);
+					ps.setString(1, evento.getNome_evento());
+					ps.setString(2, evento.getTipo_evento());
+					ps.setString(3, evento.getData());
+					ps.setString(4, evento.getHorario());
+					ps.setString(5, evento.getLocal());
+					ps.setInt(6, evento.getId_evento());
+					ps.executeUpdate();
+					System.out.println("dados alterados\n");
+					conn.desconectar(conn.conexao());
+					return true;
+					
+				}catch(SQLException erro){
+					System.out.println("Erro ao alterar dados "+erro.getMessage()+"\n");
+					throw erro;
+				}
+			}else {
+				return false;
+			}
 		}
-	}
 	
 	public boolean excluirEvento(int id_evento) throws SQLException {
-		String consulta = "SET FOREIGN_KEY_CHECKS = 0;\r\n"
-				+ "DELETE FROM tb_evento WHERE id_evento = ?;\r\n"
-				+ "SET FOREIGN_KEY_CHECKS = 1;";
+		//para excluir evento e organizador com chaves estrangeiras, é preciso desativar as chaves estrangeiras
+		String desativarChave = "SET FOREIGN_KEY_CHECKS = 0"; // comando para desativar as chaves
+		String exclueOrg = "DELETE FROM tb_organizador WHERE id_evento = ?"; // comando para escluir organizador
+		String ativarChave = "SET FOREIGN_KEY_CHECKS = 1"; // comando para ativar novamente as chaves
+		String exclueEvento = "DELETE FROM tb_evento WHERE id_evento = ?"; // comando para excluir evento
 		
 		try {
-			ps = conn.conexao().prepareStatement(consulta);
+			// desativa as chaves
+			ps = conn.conexao().prepareStatement(desativarChave);
+			ps.executeUpdate();
+			
+			//exclue o organizador
+			ps = conn.conexao().prepareStatement(exclueOrg);
 			ps.setInt(1, id_evento);
-			ps.execute();
+			ps.executeUpdate();
+			
+			//exclue o evento
+			ps = conn.conexao().prepareStatement(exclueEvento);
+			ps.setInt(1, id_evento);
+			ps.executeUpdate();
+			
+			//ativa novamente as chaves estrangeiras
+			ps = conn.conexao().prepareStatement(ativarChave);
+			ps.executeUpdate();
+			
 			System.out.println("Dados excluidos");
 			conn.desconectar(conn.conexao());
+			
 			return true;
 			
 		}catch(SQLException erro){

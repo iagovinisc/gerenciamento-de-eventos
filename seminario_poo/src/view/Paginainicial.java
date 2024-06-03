@@ -90,7 +90,6 @@ public class Paginainicial extends JFrame {
         jLabel2.setForeground(new Color(9, 91, 176));
         jLabel2.setText("Página inicial");
         
-        
 
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -110,6 +109,11 @@ public class Paginainicial extends JFrame {
         jPanel1.add(botaoPaginainicial);
         
         botaoSair = new JButton();
+        botaoSair.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		dispose();
+        	}
+        });
         botaoSair.setIcon(new ImageIcon(Paginainicial.class.getResource("/view/icons/icons8-sair-26.png")));
         botaoSair.setText(" Sair                        ");
         botaoSair.setHorizontalTextPosition(SwingConstants.RIGHT);

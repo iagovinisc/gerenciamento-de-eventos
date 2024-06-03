@@ -208,7 +208,6 @@ public class CadastrarOrganizador extends JFrame {
         botaoSair = new JButton();
         botaoSair.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-            	new Paginainicial().setVisible(true);
             	dispose();
         	}
         });

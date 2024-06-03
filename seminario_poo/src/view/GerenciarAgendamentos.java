@@ -1,6 +1,7 @@
 package view;
 
 import model.EventoDAO;
+import control.Evento;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.*;
@@ -42,7 +43,7 @@ public class GerenciarAgendamentos extends JFrame {
         botaoPaginainicial = new JButton();
         botaoPaginainicial.setBounds(0, 76, 223, 43);
         jLabel2 = new JLabel();
-        jLabel2.setBounds(317, 29, 328, 27);
+        jLabel2.setBounds(276, 29, 328, 27);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,7 +90,7 @@ public class GerenciarAgendamentos extends JFrame {
         jLabel2.setText("Gerenciar Agendamentos");
         
         jScrollPane1 = new JScrollPane();
-        jScrollPane1.setBounds(322, 150, 531, 121);
+        jScrollPane1.setBounds(276, 153, 599, 121);
         jTable1 = new JTable();
         jTable1.setFont(new Font("Segoe UI", Font.BOLD, 12));
         jTable1.setBackground(new Color(0, 191, 255));
@@ -110,12 +111,18 @@ public class GerenciarAgendamentos extends JFrame {
 
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 912, Short.MAX_VALUE)
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 912, Short.MAX_VALUE)
+        			.addGap(28))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+        			.addGap(162))
         );
         getContentPane().setLayout(layout);
         jPanel2.setLayout(null);
@@ -128,7 +135,6 @@ public class GerenciarAgendamentos extends JFrame {
         botaoSair = new JButton();
         botaoSair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new Paginainicial().setVisible(true);
                 dispose();
             }
         });
@@ -143,21 +149,26 @@ public class GerenciarAgendamentos extends JFrame {
         jPanel1.add(botaoSair);
         jPanel2.add(jLabel2);
         
-        btnEditar = new JButton("Editar");
-        btnEditar.setBounds(322, 96, 85, 27);
+        btnEditar = new JButton("Salvar alterações");
+        btnEditar.setBounds(276, 107, 137, 27);
         btnEditar.setForeground(SystemColor.textHighlight);
         btnEditar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         jPanel2.add(btnEditar);
         
         btnExcluir = new JButton("Excluir");
-        btnExcluir.setBounds(465, 96, 85, 27);
+        btnExcluir.setBounds(443, 107, 85, 27);
         btnExcluir.setForeground(SystemColor.textHighlight);
         btnExcluir.setFont(new Font("Segoe UI", Font.BOLD, 12));
         jPanel2.add(btnExcluir);
 
         btnEditar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                editarEvento();
+            	try {
+					editarEvento();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -190,14 +201,30 @@ public class GerenciarAgendamentos extends JFrame {
         selectedRow = jTable1.getSelectedRow();
     }
 
-    private void editarEvento() {
+    private void editarEvento() throws SQLException {
         if (selectedRow != -1) {
-            // Recuperar os dados da linha selecionada
+        	Evento evento = new Evento();
+        	EventoDAO eventodao = new EventoDAO();
+        	
+        	//pega os valores inseridos e envia para a classe evento
             int idEvento = (int) jTable1.getValueAt(selectedRow, 0);
+            evento.setId_evento(idEvento);
             String nomeEvento = (String) jTable1.getValueAt(selectedRow, 1);
+            evento.setNome_evento(nomeEvento);
+            String tipo = (String) jTable1.getValueAt(selectedRow, 2);
+            evento.setTipo_evento(tipo);
+            String data = (String) jTable1.getValueAt(selectedRow, 3);
+            evento.setData(data);
+            String local = (String) jTable1.getValueAt(selectedRow, 4);
+            evento.setLocal(local);
+            String hora = (String) jTable1.getValueAt(selectedRow, 5);
+            evento.setHorario(hora);
             
+            //envia os valores de evento para eventodao.editarEvento
+            eventodao.editarEvento(evento);
             
-            JOptionPane.showMessageDialog(this, "Editar evento ID: " + idEvento + " Nome: " + nomeEvento);
+            JOptionPane.showMessageDialog(this,"Alterações salvas ");
+            
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um evento para editar.");
         }
@@ -206,9 +233,11 @@ public class GerenciarAgendamentos extends JFrame {
     private void excluirEvento() throws SQLException {
     	EventoDAO eventoDAO = new EventoDAO();
         if (selectedRow != -1) {
+        	//captura o id selecionado
             int idEvento = (int) jTable1.getValueAt(selectedRow, 0);
+            //envia o dia para eventoDAO.excluirEvento
             eventoDAO.excluirEvento(idEvento);
-            JOptionPane.showMessageDialog(this, "Excluir evento ID: " + idEvento);
+            JOptionPane.showMessageDialog(this, "Evento excluido");
             ((DefaultTableModel) jTable1.getModel()).removeRow(selectedRow);
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um evento para excluir.");

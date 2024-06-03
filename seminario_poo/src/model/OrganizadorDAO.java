@@ -8,6 +8,11 @@ import control.Organizador;
 import control.Evento;
 
 public class OrganizadorDAO {
+	
+	Conexao conn = new Conexao();
+	PreparedStatement ps = null;
+	
+	
 	private int id_evento;
 	public int getId_evento() {
 		return id_evento;
@@ -16,9 +21,6 @@ public class OrganizadorDAO {
 	public void setId_evento(int id_evento) {
 		this.id_evento = id_evento;
 	}
-	
-	Conexao conn = new Conexao();
-	PreparedStatement ps = null;
 	
 	public boolean buscarIdEvento() throws SQLException {
 		try {
