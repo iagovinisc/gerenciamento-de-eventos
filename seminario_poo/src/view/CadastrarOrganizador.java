@@ -20,7 +20,6 @@ public class CadastrarOrganizador extends JFrame {
     private JPanel jPanel1;
     private JButton botaoGerenciarAgendamentos;
     private JButton botaoAgendarEvento;
-    private JButton botaoCadastrarOrganizador;
     private JButton botaoPaginainicial;
     private JLabel jLabel2;
     private JLabel jLabel3;
@@ -51,11 +50,9 @@ public class CadastrarOrganizador extends JFrame {
             	dispose();
         	}
         });
-        botaoGerenciarAgendamentos.setBounds(0, 278, 223, 41);
+        botaoGerenciarAgendamentos.setBounds(0, 211, 223, 41);
         botaoAgendarEvento = new JButton();
-        botaoAgendarEvento.setBounds(0, 143, 223, 43);
-        botaoCadastrarOrganizador = new JButton();
-        botaoCadastrarOrganizador.setBounds(0, 210, 223, 42);
+        botaoAgendarEvento.setBounds(0, 148, 223, 43);
         botaoPaginainicial = new JButton();
         botaoPaginainicial.setBounds(0, 82, 223, 43);
         jLabel2 = new JLabel();
@@ -107,18 +104,6 @@ public class CadastrarOrganizador extends JFrame {
         botaoAgendarEvento.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 jButton18ActionPerformed(evt);
-            }
-        });
-
-        botaoCadastrarOrganizador.setBackground(new Color(36, 135, 219));
-        botaoCadastrarOrganizador.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        botaoCadastrarOrganizador.setForeground(new Color(255, 255, 255));
-        botaoCadastrarOrganizador.setIcon(new ImageIcon(CadastrarOrganizador.class.getResource("/view/icons/icons8-usuário-50.png")));
-        botaoCadastrarOrganizador.setText("Cadastrar organizador");
-        botaoCadastrarOrganizador.setBorderPainted(false);
-        botaoCadastrarOrganizador.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jButton20ActionPerformed(evt);
             }
         });
 
@@ -216,7 +201,6 @@ public class CadastrarOrganizador extends JFrame {
         jPanel2.setLayout(null);
         jPanel2.add(jPanel1);
         jPanel1.setLayout(null);
-        jPanel1.add(botaoCadastrarOrganizador);
         jPanel1.add(botaoGerenciarAgendamentos);
         jPanel1.add(botaoAgendarEvento);
         jPanel1.add(botaoPaginainicial);
@@ -235,7 +219,7 @@ public class CadastrarOrganizador extends JFrame {
         botaoSair.setFont(new Font("Segoe UI", Font.BOLD, 13));
         botaoSair.setBorderPainted(false);
         botaoSair.setBackground(new Color(36, 135, 219));
-        botaoSair.setBounds(0, 344, 223, 41);
+        botaoSair.setBounds(0, 274, 223, 41);
         jPanel1.add(botaoSair);
         jPanel2.add(jLabel2);
         jPanel2.add(jLabel5);
@@ -269,10 +253,6 @@ public class CadastrarOrganizador extends JFrame {
     	new AgendarEventos().setVisible(true);
     	dispose();
         // Implementar a lógica para o botão jButton18, se necessário
-    }
-
-    private void jButton20ActionPerformed(ActionEvent evt) {
-        // Implementar a lógica para o botão jButton20, se necessário
     }
 
     private void jButton21ActionPerformed(ActionEvent evt) {

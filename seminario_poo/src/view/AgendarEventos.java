@@ -173,15 +173,16 @@ public class AgendarEventos extends JFrame {
         criarAgendamento.setBorderPainted(false);
         criarAgendamento.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	new CadastrarOrganizador().setVisible(true);
                 criarEventoActionPerformed(evt);
                 
-                Organizador org = new Organizador();
+          
                 EventoDAO eventoDAO = new EventoDAO();
                 Evento evento = new Evento();
                 
                 
                 try {
+                	
+                	//captura os dados inseridos pelo usuario
                     evento.setNome_evento(campoNome.getText());
                     evento.setTipo_evento(campoTipo.getText());
                     evento.setDescricao(campoDescricao.getText());
@@ -189,10 +190,11 @@ public class AgendarEventos extends JFrame {
                     evento.setData(campoData.getText());
                     evento.setHorario(campoHorario.getText());  
                     
+                    //caso consiga cadasrar o evento
                     if(eventoDAO.cadastrarEvento(evento) == true) {
                     	new CadastrarOrganizador().setVisible(true);
                     	dispose();  
-        
+                    //caso não consiga
                     }else {
                         JOptionPane.showMessageDialog(null, "Já existe um evento cadastrado com a mesma data, hora e local, altere alguma dessas opções");
                     }

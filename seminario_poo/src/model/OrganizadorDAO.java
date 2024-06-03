@@ -22,7 +22,7 @@ public class OrganizadorDAO {
 	
 	public boolean buscarIdEvento() throws SQLException {
 		try {
-			/*este comando mostra o ultimo valor da coluna id_evento, é a 
+			/*este comando mostra o ultimo valor da coluna id_evento na tabela eventos, é a 
 			chave necessaria para cadastrar o organizador dentro do ultimo evento cadastrado*/
 			String buscar = "SELECT * FROM tb_evento ORDER BY id_evento DESC LIMIT 1";
 			
@@ -46,12 +46,12 @@ public class OrganizadorDAO {
 	
 	public boolean cadastrarOrg(Organizador org) throws SQLException {
 		
-		buscarIdEvento(); // executa o metodo 
-		if(buscarIdEvento() == true) {
+		buscarIdEvento(); // primeiro executa o metodo de buscar id
+		if(buscarIdEvento() == true) { //se achar o id do evento ele executa o cadastro
 			
 			try {
 				String insere = "INSERT INTO tb_organizador(nome, email, cpf, telefone, endereco, id_evento) VALUES (?, ?, ?, ?, ?, ?)";
-				//envia os dados para tb_organizador
+				//envia os dados para o banco na tabela organizador
 				ps = conn.conexao().prepareStatement(insere);
 				ps.setString(1, org.getNome());
 				ps.setString(2, org.getEmail());

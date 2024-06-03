@@ -6,8 +6,9 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-
 import javax.swing.table.DefaultTableModel;
 
 public class GerenciarAgendamentos extends JFrame {
@@ -23,6 +24,7 @@ public class GerenciarAgendamentos extends JFrame {
     private JButton btnExcluir;
     private JScrollPane jScrollPane1;
     private JTable jTable1;
+    private int selectedRow;
 
     public GerenciarAgendamentos() {
         initComponents();
@@ -100,6 +102,12 @@ public class GerenciarAgendamentos extends JFrame {
         jScrollPane1.setViewportView(jTable1);
         jPanel2.add(jScrollPane1);
 
+        jTable1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -149,13 +157,19 @@ public class GerenciarAgendamentos extends JFrame {
 
         btnEditar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                // Ação do botão Editar
+                editarEvento();
             }
         });
 
         btnExcluir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                // Ação do botão Excluir
+                try {
+					excluirEvento();
+		
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -163,22 +177,54 @@ public class GerenciarAgendamentos extends JFrame {
     }
 
     private void jButton21ActionPerformed(ActionEvent evt) {
-    	new Paginainicial().setVisible(true);
-    	dispose();
+        new Paginainicial().setVisible(true);
+        dispose();
     }
 
     private void jButton18ActionPerformed(ActionEvent evt) {
-    	new AgendarEventos().setVisible(true);
-    	dispose();
+        new AgendarEventos().setVisible(true);
+        dispose();
+    }
+
+    private void jTable1MouseClicked(MouseEvent evt) {
+        selectedRow = jTable1.getSelectedRow();
+    }
+
+    private void editarEvento() {
+        if (selectedRow != -1) {
+            // Recuperar os dados da linha selecionada
+            int idEvento = (int) jTable1.getValueAt(selectedRow, 0);
+            String nomeEvento = (String) jTable1.getValueAt(selectedRow, 1);
+            
+            
+            JOptionPane.showMessageDialog(this, "Editar evento ID: " + idEvento + " Nome: " + nomeEvento);
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um evento para editar.");
+        }
+    }
+
+    private void excluirEvento() throws SQLException {
+    	EventoDAO eventoDAO = new EventoDAO();
+        if (selectedRow != -1) {
+            int idEvento = (int) jTable1.getValueAt(selectedRow, 0);
+            eventoDAO.excluirEvento(idEvento);
+            JOptionPane.showMessageDialog(this, "Excluir evento ID: " + idEvento);
+            ((DefaultTableModel) jTable1.getModel()).removeRow(selectedRow);
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione um evento para excluir.");
+        }
     }
 
     private void carregarDados() {
         EventoDAO eventoDAO = new EventoDAO();
         try {
+        	//instancia um objeto para receber a tabela criada em eventoDAO.mostrarEventos
             DefaultTableModel tabela = eventoDAO.mostrarEventos();
+            //envia a tabela para a interface
             jTable1.setModel(tabela);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao carregar os dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erro ao carregar os dados: " + e.getMessage(), 
+            								"Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
